@@ -138,7 +138,7 @@ mom_text_dict_eng = {
     'ㅢ' : 'ml'
 }
 
-def translated_text():
+def translated_text(input_word):
     client_id = "input your Id" 
     client_secret = "input your Secret" 
     encText = urllib.parse.quote(input_word)
@@ -164,6 +164,10 @@ def original_text(input_word):
     result = ''
 
     while index < word_len:
+        if word[index] == ' ':
+            result += word[index]
+            index += 1
+            continue
         word_list = list(hgtk.letter.decompose(word[index]))
         for tmp_index, tmp_word in enumerate(word_list):
             if tmp_word in mom_text_dict_eng:
@@ -284,10 +288,10 @@ def to_korean(input_word):
 
 def trans(input_word):
     if sys.argv[len(sys.argv) - 1] == 'eng':
-        t1 = threading.Thread(target = original_text, args = (input_word))
-        t2 = threading.Thread(target = translated_text, args = (input_word))
+        t1 = threading.Thread(target = original_text, args = (input_word,))
+        #t2 = threading.Thread(target = translated_text, args = (input_word))
         t1.start()
-        t2.start()
+        #t2.start()
 
 def error():
     print('Usage : python3 replace_text.py [word] [eng|kor]')
