@@ -176,81 +176,124 @@ def original_text():
     
     print('original_text : ' + result)
 
-if sys.argv[2] == 'kor':
+''' 
+My Code Cannot init because ㅡ + ㅣ => ml, ㅢ => ml, there are not different
+def init():
     word = sys.argv[1]
     word_len = len(sys.argv[1])
+    result = ''
     index = 0
-    cho, jung, jong = 0, 0, 0
 
     while index < word_len:
         if word[index] in mom_text_dict:
-            print(mom_text_dict[word[index]], end = '')
-            index += 1
-        #ㅁ,ㄱ....
-        elif word[index] in jom_text_dict:
-            cho = chosung.index(jom_text_dict[word[index]])
-            if index + 1 >= word_len:
-                print(jom_text_dict[word[index]], end = '')
-                index += 1
-            #ㅁ + ㅡ
+            # ㅡ....
+            if index + 1 < word_len:
+                result += word[index]
+            # ㅡ + ㅣ ....
             elif word[index + 1] in mom_text_dict:
-                if index + 2 >= word_len:
-                    jung = jungsung.index(mom_text_dict[word[index + 1]])
-                    print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
-                    index += 2
-                # ㅁ + ㅡ + ㅣ
-                elif word[index + 2] in mom_text_dict:
-                    if (word[index + 1] + word[index + 2]) in mom_text_dict:
-                        jung = jungsung.index(mom_text_dict[word[index + 1] + word[index + 2]])
-                        if index + 3 >= word_len:
-                            print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
-                            index += 3
-                        elif word[index + 3] in mom_text_dict:
-                            print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
-                            index += 3
-                        #ㅁ + ㅡ + ㅣ + ㅁ
-                        else:
-                            jong = jongsung.index(jom_text_dict[word[index + 3]])
-                            if index + 4 >= word_len:
-                                print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
-                                index += 4
-                            #ㅁ + ㅡ + ㅣ + ㅁ + ㅣ....
-                            elif word[index + 4] in mom_text_dict:
-                                print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
-                                index += 3
-                            #ㅁ + ㅡ + ㅣ + ㅁ + ㅁ....
-                            else:
-                                print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
-                                index += 4
-                # ㅁ + ㅡ + ㅁ
-                else:
-                    jung = jungsung.index(mom_text_dict[word[index + 1]])
-                    jong = jongsung.index(jom_text_dict[word[index + 2]])
-                    if index + 3 >= word_len:
-                        print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
-                        index += 3
-                    #ㅁ + ㅡ + ㅁ + ㅣ.....
-                    elif word[index + 3] in mom_text_dict:
+                #ㅢ.....
+                if (word[index] + word[index + 1]) in mom_text_dict:
+                    result += mom
+'''
+
+def to_korean():
+    if sys.argv[2] == 'kor':
+        word = sys.argv[1]
+        word_len = len(sys.argv[1])
+        index = 0
+        cho, jung, jong = 0, 0, 0
+
+        while index < word_len:
+            if word[index] in mom_text_dict:
+                print(mom_text_dict[word[index]], end = '')
+                index += 1
+            #ㅁ,ㄱ....
+            elif word[index] in jom_text_dict:
+                cho = chosung.index(jom_text_dict[word[index]])
+                if index + 1 >= word_len:
+                    print(jom_text_dict[word[index]], end = '')
+                    index += 1
+                #ㅁ + ㅡ
+                elif word[index + 1] in mom_text_dict:
+                    if index + 2 >= word_len:
+                        jung = jungsung.index(mom_text_dict[word[index + 1]])
                         print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
                         index += 2
-                    #ㅁ + ㅡ + ㅁ + ㅁ....
+                    # ㅁ + ㅡ + ㅣ
+                    elif word[index + 2] in mom_text_dict:
+                        if (word[index + 1] + word[index + 2]) in mom_text_dict:
+                            jung = jungsung.index(mom_text_dict[word[index + 1] + word[index + 2]])
+                            if index + 3 >= word_len:
+                                print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
+                                index += 3
+                            elif word[index + 3] in mom_text_dict:
+                                print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
+                                index += 3
+                            #ㅁ + ㅡ + ㅣ + ㅁ
+                            else:
+                                jong = jongsung.index(jom_text_dict[word[index + 3]])
+                                if index + 4 >= word_len:
+                                    print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                    index += 4
+                                #ㅁ + ㅡ + ㅣ + ㅁ + ㅣ....
+                                elif word[index + 4] in mom_text_dict:
+                                    print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
+                                    index += 3
+                                #ㅁ + ㅡ + ㅣ + ㅁ + ㅁ....
+                                else:
+                                    if (word[index + 3] + word[index + 4]) in jom_text_dict:
+                                        jong  = jongsung.index(jom_text_dict[word[index + 3] + word[index + 4]])
+                                        print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                        index += 5
+                                    else:
+                                        print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                        index += 4
+                    # ㅁ + ㅡ + ㅁ
                     else:
-                        print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
-                        index += 3
+                        jung = jungsung.index(mom_text_dict[word[index + 1]])
+                        jong = jongsung.index(jom_text_dict[word[index + 2]])
+                        if index + 3 >= word_len:
+                            print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                            index += 3
+                        #ㅁ + ㅡ + ㅁ + ㅣ.....
+                        elif word[index + 3] in mom_text_dict:
+                            print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
+                            index += 2
+                        #ㅁ + ㅡ + ㄱ + ㅁ....
+                        else:
+                            #ㅁ + ㅡ + ㄱ + ㅅ.. => ㅁ + ㅡ + ㄳ
+                            if (word[index + 2] + word[index + 3]) in jom_text_dict:
+                                jong = jongsung.index(jom_text_dict[word[index + 2] + word[index + 3]])
+                                print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                index += 4
+                            else:
+                                print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                index += 3
+                else:
+                    print(jom_text_dict[word[index]], end = '')
+                    index += 1
+            #space, or other word
             else:
-                print(jom_text_dict[word[index]], end = '')
+                print(word[index])
                 index += 1
-        else:
-            print('Unknown Word')
-            break
-    print()
-                    
-elif sys.argv[2] == 'eng':
-    t1 = threading.Thread(target = original_text)
-    t2 = threading.Thread(target = translated_text)
-    t1.start()
-    t2.start()
+                break
+        print()
 
-else:
+def trans():
+    if sys.argv[2] == 'eng':
+        t1 = threading.Thread(target = original_text)
+        t2 = threading.Thread(target = translated_text)
+        t1.start()
+        t2.start()
+
+def error():
     print('Usage : python3 replace_text.py [word] [eng|kor]')
     sys.exit(1)
+
+if __name__ == '__main__':
+    if sys.argv[2] == 'kor':
+        to_korean()
+    elif sys.argv[2] == 'eng':
+        trans()
+    else:
+        error()
