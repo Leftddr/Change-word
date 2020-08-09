@@ -245,10 +245,21 @@ def to_korean(input_word):
                                     index += 3
                                 #ㅁ + ㅡ + ㅣ + ㅁ + ㅁ....
                                 else:
+                                    #ㅁ + ㅡ + ㄱ + ㅅ.. => ㅁ + ㅡ + ㄳ
                                     if (word[index + 3] + word[index + 4]) in jom_text_dict:
-                                        jong  = jongsung.index(jom_text_dict[word[index + 3] + word[index + 4]])
-                                        print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
-                                        index += 5
+                                        # ㅁ + ㅡ + ㄱ + ㅅ + ㅜ => 믁수
+                                        if index + 5 >= word_len:
+                                            jong  = jongsung.index(jom_text_dict[word[index + 3] + word[index + 4]])
+                                            print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                            index += 5
+                                        elif word[index + 5] in mom_text_dict:
+                                            jong = jongsung.index(jom_text_dict[word[inex + 3]])
+                                            print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                            index += 4
+                                        else:
+                                            jong  = jongsung.index(jom_text_dict[word[index + 3] + word[index + 4]])
+                                            print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                            index += 5
                                     else:
                                         print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
                                         index += 4
@@ -267,9 +278,18 @@ def to_korean(input_word):
                         else:
                             #ㅁ + ㅡ + ㄱ + ㅅ.. => ㅁ + ㅡ + ㄳ
                             if (word[index + 2] + word[index + 3]) in jom_text_dict:
-                                jong = jongsung.index(jom_text_dict[word[index + 2] + word[index + 3]])
-                                print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
-                                index += 4
+                                if index + 4 >= word_len:
+                                    jong  = jongsung.index(jom_text_dict[word[index + 2] + word[index + 3]])
+                                    print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                    index += 4
+                                elif word[index + 4] in mom_text_dict:
+                                    jong = jongsung.index(jom_text_dict[word[index + 2]])
+                                    print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                    index += 3
+                                else:
+                                    jong  = jongsung.index(jom_text_dict[word[index + 2] + word[index + 3]])
+                                    print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
+                                    index += 4
                             else:
                                 print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
                                 index += 3
