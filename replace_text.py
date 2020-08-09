@@ -141,7 +141,7 @@ mom_text_dict_eng = {
 def translated_text():
     client_id = "input your Id" 
     client_secret = "input your Secret" 
-    encText = urllib.parse.quote(sys.argv[1])
+    encText = urllib.parse.quote(input_word)
     data = "source=ko&target=en&text=" + encText
     url = "https://openapi.naver.com/v1/papago/n2mt"
     request = urllib.request.Request(url)
@@ -157,9 +157,9 @@ def translated_text():
     else:
         print("Error Code:" + rescode)
 
-def original_text():
-    word_len = len(sys.argv[1])
-    word = sys.argv[1]
+def original_text(input_word):
+    word_len = len(input_word)
+    word = input_word
     index = 0
     result = ''
 
@@ -196,10 +196,10 @@ def init():
                     result += mom
 '''
 
-def to_korean():
-    if sys.argv[2] == 'kor':
-        word = sys.argv[1]
-        word_len = len(sys.argv[1])
+def to_korean(input_word):
+    if sys.argv[len(sys.argv) - 1] == 'kor':
+        word = input_word
+        word_len = len(input_word)
         index = 0
         cho, jung, jong = 0, 0, 0
 
@@ -249,7 +249,7 @@ def to_korean():
                                         print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
                                         index += 4
                     # ㅁ + ㅡ + ㅁ
-                    else:
+                    elif word[index + 2] in jom_text_dict:
                         jung = jungsung.index(mom_text_dict[word[index + 1]])
                         jong = jongsung.index(jom_text_dict[word[index + 2]])
                         if index + 3 >= word_len:
@@ -269,20 +269,23 @@ def to_korean():
                             else:
                                 print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
                                 index += 3
+                    else:
+                        jung = jungsung.index(mom_text_dict[word[index + 1]])
+                        print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
+                        index += 2
                 else:
                     print(jom_text_dict[word[index]], end = '')
                     index += 1
             #space, or other word
             else:
-                print(word[index])
+                print(word[index], end = '')
                 index += 1
-                break
         print()
 
-def trans():
-    if sys.argv[2] == 'eng':
-        t1 = threading.Thread(target = original_text)
-        t2 = threading.Thread(target = translated_text)
+def trans(input_word):
+    if sys.argv[len(sys.argv) - 1] == 'eng':
+        t1 = threading.Thread(target = original_text, args = (input_word))
+        t2 = threading.Thread(target = translated_text, args = (input_word))
         t1.start()
         t2.start()
 
@@ -290,10 +293,17 @@ def error():
     print('Usage : python3 replace_text.py [word] [eng|kor]')
     sys.exit(1)
 
+def init():
+    result = ''
+    for i in range(1, len(sys.argv) - 1):
+        result += (sys.argv[i] + ' ')
+    return result
+
 if __name__ == '__main__':
-    if sys.argv[2] == 'kor':
-        to_korean()
-    elif sys.argv[2] == 'eng':
-        trans()
+    input_word = init()
+    if sys.argv[len(sys.argv) - 1] == 'kor':
+        to_korean(input_word)
+    elif sys.argv[len(sys.argv) - 1] == 'eng':
+        trans(input_word)
     else:
         error()
