@@ -11,4 +11,6 @@ python is change hangul to english, englist to hangul
 so you must input your naver-id, naver-secret to translate the word
 
 # Example
-rnrtnsms tkfadktj aksemsms rjtdlek => 국수는 삶아서 만드는 것이다 tkarPxkddmf ajrek => 삼계탕을 먹다
+rnrtnsms tkfadktj aksemsms rjtdlek => 국수는 삶아서 만드는 것이다
+tkarPxkddmf ajrek => 삼계탕을 먹다
+
