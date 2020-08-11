@@ -235,6 +235,10 @@ def to_korean(input_word):
                                 index += 3
                             #ㅁ + ㅡ + ㅣ + ㅁ
                             else:
+                                if word[index + 3] == ' ':
+                                    print(chr(0xAC00 + ((cho*21)+jung)*28+0), end = '')
+                                    index += 3
+                                    continue
                                 jong = jongsung.index(jom_text_dict[word[index + 3]])
                                 if index + 4 >= word_len:
                                     print(chr(0xAC00 + ((cho*21)+jung)*28+jong), end = '')
